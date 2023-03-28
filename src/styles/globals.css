@@ -1,9 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  --max-width: 1100px;
-  --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --bg-body: '#FFF6ED';
+
+  --primary-color: theme('colors.primary');
+  --accent-color: theme('colors.accent');
 
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -40,39 +43,6 @@
   --card-border-rgb: 131, 134, 135;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
-
-    --tile-start-rgb: 2, 13, 46;
-    --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
-
-    --callout-rgb: 20, 20, 20;
-    --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
-  }
-}
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -87,12 +57,11 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: var(--bg-body);
+}
+
+main {
+  min-height: 100vh;
 }
 
 a {
@@ -100,8 +69,142 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+.unblur {
+  animation: unblur 1s linear;
+}
+
+@keyframes unblur {
+  from {
+    filter: blur(20px);
   }
+  to {
+    filter: blur(0);
+  }
+}
+
+/* Navbar */
+
+.header_fixed {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.navbar-open {
+  animation-duration: 1s;
+  animation-name: navbar_open;
+}
+
+@keyframes navbar_open {
+  from {
+    height: 1%;
+    box-shadow: var(--shadow);
+    opacity: 0;
+  }
+
+  to {
+    height: 100%;
+    opacity: 100%;
+    box-shadow: var(--ring-offset-shadow,0 0 #0000),var(--ring-shadow,0 0 #0000),var(--shadow);
+  }
+}
+
+.underscore-nav.active::after {
+  content: '';
+  position: absolute;
+  background-color: var(--primary-color);
+  height: 4px;
+  width: 60%;
+  left: calc((100% - 60%)/2);
+  bottom: 0px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.underscore-nav::after {
+  content: '';
+  position: absolute;
+  background-color: var(--primary-color);
+  height: 4px;
+  width: 0;
+  left: calc((100% - 60%)/2);
+  bottom: 0px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.underscore-nav:hover::after {
+  width: 60%;
+}
+
+/* Line Navbar */
+
+.line {
+  fill: none;
+  stroke-width: 6;
+  transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+        stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 25px;
+}
+
+.line1 {
+  stroke-dasharray: 60 207;
+  stroke-width: 6;
+  stroke: var(--primary-color);
+}
+
+.line2 {
+  stroke-dasharray: 60 60;
+  stroke-width: 6;
+  stroke: var(--primary-color);
+}
+
+.line3 {
+  stroke-dasharray: 60 207;
+  stroke-width: 6;
+  stroke: var(--primary-color);
+}
+
+.opened .line1 {
+  stroke-dasharray: 90 207;
+  stroke-dashoffset: -134;
+  stroke-width: 6;
+  stroke: var(--primary-color);
+}
+
+.opened .line2 {
+  stroke-dasharray: 1 60;
+  stroke-dashoffset: -30;
+  stroke-width: 6;
+  stroke: var(--primary-color);
+}
+
+.opened .line3 {
+  stroke-dasharray: 90 207;
+  stroke-dashoffset: -134;
+  stroke-width: 6;
+  stroke: var(--primary-color);
+}
+
+/* Hero */
+.hero {
+  height: auto;
+  background-image: url('../../public/assets/image/hero-divider.svg');
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;
+}
+
+.hero .divide-hero {
+  width: 100%;
+  height: max-content;
+}
+
+.hero .hero-text h1 {
+  line-height: 67px;
+}
+
+/* Utils */
+.shadow-custom-primary {
+  box-shadow: 0px 30px 60px rgba(252, 136, 29, 0.25);
 }
